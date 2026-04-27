@@ -1,0 +1,1392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M. Ellery Voss — Author</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --paper: oklch(0.968 0.012 82);
+    --paper-2: oklch(0.945 0.016 80);
+    --ink: oklch(0.22 0.015 60);
+    --ink-soft: oklch(0.35 0.012 60);
+    --ink-faint: oklch(0.55 0.010 60);
+    --rule: oklch(0.82 0.014 70);
+    --accent: oklch(0.46 0.092 30);
+    --accent-soft: oklch(0.78 0.050 30);
+    --highlight: oklch(0.90 0.050 85);
+
+    --f-display: "Cormorant Garamond", "Times New Roman", serif;
+    --f-body: "Newsreader", Georgia, serif;
+    --f-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --grain-o: 0.06;
+  }
+
+  [data-theme="dark"] {
+    --paper: oklch(0.18 0.012 60);
+    --paper-2: oklch(0.22 0.014 55);
+    --ink: oklch(0.94 0.010 80);
+    --ink-soft: oklch(0.78 0.010 80);
+    --ink-faint: oklch(0.58 0.010 70);
+    --rule: oklch(0.35 0.014 60);
+    --accent: oklch(0.75 0.110 40);
+    --accent-soft: oklch(0.48 0.060 30);
+    --highlight: oklch(0.30 0.050 85);
+    --grain-o: 0.10;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 18px;
+    line-height: 1.6;
+    font-weight: 380;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+
+  /* subtle paper grain */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: var(--grain-o);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.15  0 0 0 0 0.1  0 0 0 0.8 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: multiply;
+  }
+  [data-theme="dark"] body::before { mix-blend-mode: screen; }
+
+  h1,h2,h3,h4 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  a { color: inherit; }
+
+  .mono {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  ::selection { background: var(--highlight); color: var(--ink); }
+
+  /* Tweaks panel */
+  .tweaks {
+    position: fixed;
+    right: 18px; bottom: 18px;
+    width: 300px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    box-shadow: 0 20px 40px -20px oklch(0.2 0.02 60 / 0.3), 0 2px 4px oklch(0.2 0.02 60 / 0.1);
+    font-family: var(--f-body);
+    font-size: 13px;
+    z-index: 2000;
+    border-radius: 2px;
+    max-height: calc(100vh - 40px);
+    overflow: auto;
+  }
+  .tweaks header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tweaks h4 {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .tweaks .group { padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+  .tweaks .group:last-child { border-bottom: 0; }
+  .tweaks .label {
+    font-family: var(--f-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .tweaks .row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tweaks button.opt {
+    font-family: var(--f-body);
+    font-size: 12px;
+    padding: 5px 10px;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .tweaks button.opt:hover { border-color: var(--ink); }
+  .tweaks button.opt.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .tweaks .swatch-row { display: flex; gap: 6px; }
+  .tweaks .swatch {
+    width: 28px; height: 28px; border-radius: 50%;
+    cursor: pointer; border: 1px solid var(--rule);
+    position: relative;
+  }
+  .tweaks .swatch.active::after {
+    content: ""; position: absolute; inset: -4px;
+    border: 1px solid var(--ink); border-radius: 50%;
+  }
+  .tweaks .toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 0;
+    font-family: var(--f-body);
+    font-size: 13px;
+  }
+  .tweaks .switch {
+    width: 34px; height: 18px;
+    background: var(--rule); border-radius: 999px;
+    position: relative; cursor: pointer; transition: background .2s;
+  }
+  .tweaks .switch.on { background: var(--accent); }
+  .tweaks .switch::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--paper); transition: left .2s;
+  }
+  .tweaks .switch.on::after { left: 18px; }
+  .tweaks .collapse-btn {
+    background: transparent; border: 0; cursor: pointer;
+    color: var(--ink-faint); font-family: var(--f-mono);
+    font-size: 14px; padding: 0;
+  }
+
+  /* Page chrome */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 18px 40px;
+    background: color-mix(in oklch, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(120%) blur(8px);
+    -webkit-backdrop-filter: saturate(120%) blur(8px);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .topbar .mark { font-family: var(--f-display); font-size: 18px; text-transform: none; letter-spacing: 0; color: var(--ink); font-style: italic; }
+  .topbar nav { display: flex; gap: 28px; justify-self: center; }
+  .topbar nav a { text-decoration: none; opacity: 0.75; transition: opacity .15s; }
+  .topbar nav a:hover { opacity: 1; color: var(--ink); }
+  .topbar .meta { justify-self: end; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  /* sections */
+  section { padding: 110px 0; position: relative; }
+  section + section { border-top: 1px solid var(--rule); }
+  .section-label {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 56px;
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .section-label::before {
+    content: ""; width: 28px; height: 1px; background: var(--ink-faint);
+  }
+  .section-label .num { color: var(--accent); }
+
+  /* ===== HERO ===== */
+  .hero { padding: 90px 0 60px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+  }
+  .hero-type {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(64px, 11vw, 170px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+  .hero-type em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-family: var(--f-body);
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 28px 0 0;
+  }
+  .hero-meta {
+    display: flex; flex-direction: column; gap: 10px;
+    align-self: end;
+    padding-bottom: 12px;
+  }
+  .hero-meta .row {
+    display: grid; grid-template-columns: 90px 1fr;
+    gap: 20px;
+    padding: 10px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .hero-meta .row:last-child { border-bottom: 1px solid var(--rule); }
+  .hero-meta .row .k {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 3px;
+  }
+  .hero-meta .row .v { font-family: var(--f-body); color: var(--ink); }
+
+  .hero-caption {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-top: 60px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+  }
+  .hero-caption .left { font-style: italic; font-size: 15px; color: var(--ink-soft); max-width: 48ch; }
+  .hero-caption .right { display: flex; gap: 18px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--f-body);
+    font-size: 14px;
+    padding: 11px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+    border-radius: 1px;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: var(--paper); }
+  .btn .arrow { font-family: var(--f-mono); font-size: 13px; }
+
+  /* ===== BOOK FEATURE ===== */
+  .book-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .cover-wrap {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    transform: rotate(-1.2deg);
+    transition: transform .4s ease;
+  }
+  .cover-wrap:hover { transform: rotate(0deg) translateY(-4px); }
+  .cover {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, oklch(0.32 0.05 30) 0%, oklch(0.20 0.03 30) 100%);
+    box-shadow:
+      0 1px 0 oklch(0.15 0.02 30) inset,
+      -8px 0 16px -12px oklch(0.15 0.02 30 / 0.6),
+      0 30px 50px -30px oklch(0.15 0.02 30 / 0.45),
+      0 60px 80px -60px oklch(0.15 0.02 30 / 0.3);
+    color: oklch(0.94 0.02 70);
+    padding: 32px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-radius: 1px;
+  }
+  .cover::before {
+    content: ""; position: absolute; left: 8px; top: 0; bottom: 0;
+    width: 1px; background: oklch(0.94 0.02 70 / 0.15);
+  }
+  .cover .cover-top { display: flex; flex-direction: column; gap: 10px; }
+  .cover .cover-brand {
+    font-family: var(--f-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .cover .cover-title {
+    font-family: var(--f-display);
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+  .cover .cover-title em {
+    display: block;
+    font-style: italic;
+    color: oklch(0.85 0.08 60);
+  }
+  .cover .cover-author {
+    font-family: var(--f-display);
+    font-size: 20px;
+    font-style: italic;
+    opacity: 0.85;
+    letter-spacing: 0.02em;
+  }
+  .cover .ornament {
+    width: 40px; height: 1px;
+    background: oklch(0.94 0.02 70 / 0.5);
+    margin-bottom: 16px;
+  }
+
+  .book-text h2 {
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1.02;
+    font-weight: 300;
+  }
+  .book-text h2 em { font-style: italic; color: var(--accent); }
+  .book-text .pub-line {
+    display: flex; gap: 16px; align-items: center;
+    margin: 20px 0 32px;
+    flex-wrap: wrap;
+  }
+  .pub-line .chip {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .pub-line .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-faint); }
+
+  .book-text .synopsis {
+    font-size: 19px;
+    line-height: 1.55;
+    max-width: 52ch;
+  }
+  .book-text .synopsis p + p { margin-top: 1.2em; }
+  .drop {
+    float: left;
+    font-family: var(--f-display);
+    font-size: 72px;
+    line-height: 0.82;
+    padding-right: 10px;
+    padding-top: 6px;
+    color: var(--accent);
+  }
+
+  .blurbs {
+    margin-top: 44px;
+    display: grid; grid-template-columns: 1fr; gap: 18px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .blurb {
+    display: grid; grid-template-columns: 20px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .blurb .quote {
+    font-family: var(--f-display);
+    font-size: 36px;
+    line-height: 0.6;
+    color: var(--accent);
+    padding-top: 8px;
+  }
+  .blurb p {
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .blurb cite {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-style: normal;
+  }
+
+  .buy-row {
+    display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap;
+  }
+
+  /* ===== IN PROGRESS ===== */
+  .wip-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .wip {
+    padding: 40px 30px 40px 0;
+    border-right: 1px solid var(--rule);
+    display: flex; flex-direction: column;
+    min-height: 320px;
+    position: relative;
+    transition: background .2s;
+  }
+  .wip:last-child { border-right: 0; padding-right: 0; }
+  .wip:not(:first-child) { padding-left: 30px; }
+  .wip .status {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .wip .status .bar {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    position: relative;
+  }
+  .wip .status .bar::before {
+    content: "";
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: var(--accent);
+    width: var(--pct, 30%);
+  }
+  .wip h3 {
+    font-size: 34px;
+    line-height: 1.05;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .wip h3 em { font-style: italic; }
+  .wip .tag {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+  }
+  .wip p {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    flex: 1;
+  }
+  .wip .foot {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between;
+  }
+
+  /* ===== SUBSTACK ===== */
+  .substack {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .substack-left h2 {
+    font-size: clamp(38px, 5vw, 68px);
+    line-height: 1.0;
+    font-weight: 300;
+  }
+  .substack-left h2 em { font-style: italic; color: var(--accent); }
+  .substack-left .desc {
+    margin: 24px 0 32px;
+    font-size: 18px;
+    line-height: 1.55;
+    max-width: 40ch;
+    color: var(--ink-soft);
+  }
+  .substack-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 28px;
+  }
+  .stat {
+    padding: 18px 14px 0 0;
+    border-right: 1px solid var(--rule);
+  }
+  .stat:last-child { border-right: 0; }
+  .stat .num {
+    font-family: var(--f-display);
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 400;
+  }
+  .stat .lab {
+    font-family: var(--f-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 6px;
+  }
+
+  .signup {
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    padding: 28px;
+    border-radius: 2px;
+    margin-top: 36px;
+  }
+  .signup form {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .signup input {
+    font-family: var(--f-body);
+    font-size: 16px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 12px 14px;
+    color: var(--ink);
+    border-radius: 1px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .signup input:focus { border-color: var(--ink); }
+  .signup .hint {
+    margin-top: 10px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .signup .hint em { color: var(--accent); font-style: normal; }
+
+  .posts {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--rule);
+  }
+  .post {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 32px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    cursor: pointer;
+    transition: padding-left .2s;
+  }
+  .post:hover { padding-left: 10px; background: color-mix(in oklch, var(--paper-2) 50%, transparent); }
+  .post .date {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .post .title {
+    font-family: var(--f-display);
+    font-size: 26px;
+    line-height: 1.15;
+    font-weight: 400;
+  }
+  .post .title em { font-style: italic; color: var(--accent); }
+  .post .excerpt {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .post .read {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .post:hover .read { color: var(--accent); }
+
+  /* ===== BIO ===== */
+  .bio {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+  }
+  .bio-portrait {
+    position: sticky; top: 100px;
+    aspect-ratio: 3 / 4;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .bio-portrait .ph {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in oklch, var(--ink) 8%, transparent) 14px 15px);
+  }
+  .bio-portrait .ph-label {
+    position: absolute; left: 16px; bottom: 16px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    background: var(--paper-2);
+    padding: 4px 8px;
+    border: 1px solid var(--rule);
+  }
+  .bio-portrait .corner {
+    position: absolute;
+    font-family: var(--f-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bio-portrait .corner.tl { top: 14px; left: 16px; }
+  .bio-portrait .corner.tr { top: 14px; right: 16px; }
+
+  .bio-text h2 {
+    font-size: clamp(36px, 4.5vw, 58px);
+    line-height: 1.02;
+    font-weight: 300;
+    margin-bottom: 28px;
+  }
+  .bio-text h2 em { font-style: italic; color: var(--accent); }
+  .bio-text p {
+    font-size: 19px;
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+  .bio-text p + p { margin-top: 1em; }
+  .bio-text p:first-of-type::first-letter {
+    font-family: var(--f-display);
+    font-size: 4.5em;
+    float: left;
+    line-height: 0.82;
+    padding-right: 10px;
+    padding-top: 6px;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .bio-facts {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 44px;
+    border-top: 1px solid var(--rule);
+  }
+  .fact {
+    padding: 18px 18px 18px 0;
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+  }
+  .fact:nth-child(even) { border-right: 0; padding-left: 18px; }
+  .fact:nth-child(odd) { padding-right: 18px; }
+  .fact .k {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .fact .v {
+    font-family: var(--f-display);
+    font-size: 22px;
+    font-weight: 400;
+  }
+  .fact .v em { font-style: italic; }
+
+  /* ===== CONTACT / FOOTER ===== */
+  .contact { padding: 120px 0 40px; }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+  }
+  .contact h2 {
+    font-size: clamp(48px, 8vw, 120px);
+    line-height: 0.92;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  .contact h2 em { font-style: italic; color: var(--accent); }
+  .contact-right {
+    display: flex; flex-direction: column; gap: 18px;
+    padding-bottom: 16px;
+  }
+  .contact-row {
+    display: grid; grid-template-columns: 90px 1fr;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .contact-row:last-child { border-bottom: 1px solid var(--rule); }
+  .contact-row .k {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .contact-row .v { font-family: var(--f-display); font-size: 22px; font-style: italic; }
+  .contact-row a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  .contact-row a:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer {
+    margin-top: 80px;
+    padding: 24px 0 40px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  footer .c { text-align: center; }
+  footer .r { text-align: right; }
+
+  /* Ornamental divider */
+  .ornament-rule {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; margin: 0 auto;
+    color: var(--ink-faint);
+  }
+  .ornament-rule::before, .ornament-rule::after {
+    content: ""; flex: 1; height: 1px; background: var(--rule); max-width: 120px;
+  }
+  .ornament-rule .glyph { font-family: var(--f-display); font-style: italic; font-size: 18px; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    .topbar { padding: 14px 24px; grid-template-columns: 1fr auto; }
+    .topbar .meta { display: none; }
+    .topbar nav { gap: 18px; font-size: 10px; }
+    section { padding: 70px 0; }
+    .hero-grid, .book-grid, .substack, .bio, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .wip-grid { grid-template-columns: 1fr; }
+    .wip { border-right: 0; border-bottom: 1px solid var(--rule); padding: 30px 0; }
+    .wip:not(:first-child) { padding-left: 0; }
+    .post { grid-template-columns: 1fr; gap: 6px; }
+    .post .read { display: none; }
+    .hero-caption { flex-direction: column; gap: 20px; align-items: flex-start; }
+    .cover-wrap { max-width: 340px; }
+    .tweaks { width: calc(100vw - 36px); right: 18px; bottom: 18px; }
+  }
+
+  /* Fade-in on load */
+  .fade-in { opacity: 0; transform: translateY(8px); animation: fadeUp .9s ease-out forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.18s; }
+  .d3 { animation-delay: 0.32s; }
+  .d4 { animation-delay: 0.48s; }
+
+  /* Font presets */
+  [data-type="classic"] { --f-display: "Cormorant Garamond", serif; --f-body: "Newsreader", serif; }
+  [data-type="modern"] { --f-display: "Fraunces", serif; --f-body: "Work Sans", sans-serif; }
+  [data-type="literary"] { --f-display: "Instrument Serif", serif; --f-body: "Newsreader", serif; }
+
+  /* Hero layout variants */
+  [data-hero="stacked"] .hero-grid { grid-template-columns: 1fr; }
+  [data-hero="stacked"] .hero-meta { flex-direction: row; flex-wrap: wrap; align-self: auto; padding-bottom: 0; }
+  [data-hero="stacked"] .hero-meta .row { border-top: 0; border-bottom: 1px solid var(--rule); min-width: 200px; grid-template-columns: 80px 1fr; }
+  [data-hero="stacked"] .hero-meta .row:last-child { border-bottom: 1px solid var(--rule); }
+
+  [data-hero="centered"] .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  [data-hero="centered"] .hero-type { text-align: center; }
+  [data-hero="centered"] .hero-sub { margin-left: auto; margin-right: auto; text-align: center; }
+  [data-hero="centered"] .hero-meta { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 30px; }
+  [data-hero="centered"] .hero-meta .row { border-top: 0; border-bottom: 1px solid var(--rule); min-width: 180px; }
+
+  /* Palette variants (accent color) */
+  [data-palette="oxblood"] { --accent: oklch(0.46 0.092 30); --accent-soft: oklch(0.78 0.050 30); }
+  [data-palette="ink"] { --accent: oklch(0.35 0.055 260); --accent-soft: oklch(0.72 0.035 260); }
+  [data-palette="forest"] { --accent: oklch(0.42 0.080 155); --accent-soft: oklch(0.72 0.045 155); }
+  [data-palette="ochre"] { --accent: oklch(0.62 0.130 75); --accent-soft: oklch(0.82 0.070 75); }
+  [data-palette="plum"] { --accent: oklch(0.42 0.100 330); --accent-soft: oklch(0.75 0.055 330); }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+  const { useState, useEffect, useRef } = React;
+
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "palette": "oxblood",
+    "typePair": "classic",
+    "heroLayout": "split",
+    "dark": false,
+    "showWip": true,
+    "showSubstack": true,
+    "showBio": true,
+    "showContact": true
+  }/*EDITMODE-END*/;
+
+  const PALETTES = [
+    { id: "oxblood", label: "Oxblood", color: "oklch(0.46 0.092 30)" },
+    { id: "ink", label: "Ink", color: "oklch(0.35 0.055 260)" },
+    { id: "forest", label: "Forest", color: "oklch(0.42 0.080 155)" },
+    { id: "ochre", label: "Ochre", color: "oklch(0.62 0.130 75)" },
+    { id: "plum", label: "Plum", color: "oklch(0.42 0.100 330)" },
+  ];
+  const TYPES = [
+    { id: "classic", label: "Classic" },
+    { id: "modern", label: "Modern" },
+    { id: "literary", label: "Literary" },
+  ];
+  const HEROES = [
+    { id: "split", label: "Split" },
+    { id: "stacked", label: "Stacked" },
+    { id: "centered", label: "Centered" },
+  ];
+
+  // ======= DATA (placeholders) =======
+  const AUTHOR = {
+    name: "M. Ellery Voss",
+    tagline: "Debut novelist. Essayist. I write about memory, small towns, and the weather of feeling.",
+    location: "Portland, OR",
+    agent: "Agent — Rhea Klausner, Folio Literary",
+    press: "press@mellervoss.com",
+  };
+
+  const BOOK = {
+    title: "The Inland",
+    subtitle: "Sea",
+    tag: "A NOVEL",
+    publisher: "Graywolf Press",
+    pubDate: "Spring 2026",
+    synopsis: [
+      "In the summer of 1994, a lighthouse keeper's daughter inherits a house she doesn't remember, on a lake that was never a lake. As she catalogs the rooms, she begins to understand that the past is not behind her — it is, and has always been, a kind of weather.",
+      "A debut novel about inheritance, the geography of grief, and what a small town owes to the stories it keeps telling itself.",
+    ],
+    blurbs: [
+      { text: "A quietly devastating first novel. Voss writes sentences that feel like a door clicking open in a house you thought was empty.", source: "— Advance reader" },
+      { text: "Strange, tender, and exact. I read it in one sitting and then again the next morning.", source: "— Workshop notes" },
+    ],
+  };
+
+  const WIPS = [
+    {
+      status: "Drafting — Book 2",
+      pct: 62,
+      title: "Small Weather",
+      tag: "Novel · 2027",
+      blurb: "A braided novel following three estranged sisters, a regional airline, and one very long January in the Pacific Northwest.",
+      foot: ["62,000 words", "Ch. 14 / ~22"],
+    },
+    {
+      status: "Outlining — Novella",
+      pct: 22,
+      title: "The Salt Letters",
+      tag: "Novella · TBD",
+      blurb: "Correspondence between a translator and the ghost of a 19th-century cartographer. An epistolary experiment in what a map can and cannot say.",
+      foot: ["Treatment", "Reading lists"],
+    },
+    {
+      status: "Collecting — Essays",
+      pct: 38,
+      title: "Field Recordings",
+      tag: "Essays · Substack",
+      blurb: "Ongoing essays on attention, place, and the quiet art of noticing. Published first on the Substack; a collection may follow.",
+      foot: ["7 of ~15 essays", "serialized"],
+    },
+  ];
+
+  const POSTS = [
+    {
+      date: "Apr 12, 2026",
+      title: "A small defense of the walking sentence",
+      excerpt: "Why I stopped trusting my desk and started drafting in the rain.",
+      read: "8 min",
+    },
+    {
+      date: "Mar 29, 2026",
+      title: "On writing a debut, again",
+      excerpt: "Thirteen drafts in, and the book was still pretending to be another book.",
+      read: "11 min",
+    },
+    {
+      date: "Mar 15, 2026",
+      title: "Field notes — late winter",
+      excerpt: "A reading list, three weather reports, and one unreasonable metaphor.",
+      read: "6 min",
+    },
+    {
+      date: "Feb 24, 2026",
+      title: "The lighthouse problem",
+      excerpt: "How I spent a year trying to describe the exact blue of a storm coming in.",
+      read: "9 min",
+    },
+  ];
+
+  const BIO = [
+    "M. Ellery Voss grew up on the north coast of Oregon, the daughter of a marine biologist and a public-library cataloger. She studied literature at Reed and holds an MFA from the Iowa Writers' Workshop, where her thesis won the Truman Capote Prize for fiction.",
+    "Her short fiction and essays have appeared in The Sewanee Review, The Paris Review Daily, A Public Space, and Granta. She writes a weekly newsletter, Field Recordings, on attention, landscape, and the strange work of making things up on purpose.",
+    "She lives in a small house at the edge of a city, with too many books and one serious cat.",
+  ];
+
+  const FACTS = [
+    { k: "Based in", v: "Portland, Oregon" },
+    { k: "Represented by", v: "Rhea Klausner, Folio" },
+    { k: "Teaching", v: "Tin House Workshops" },
+    { k: "Reading", v: "Gallant, Berger, Stafford" },
+  ];
+
+  // ======= TWEAKS PANEL =======
+  function Tweaks({ state, setState, onClose }) {
+    const update = (k, v) => {
+      const next = { ...state, [k]: v };
+      setState(next);
+      window.parent?.postMessage({ type: "__edit_mode_set_keys", edits: { [k]: v } }, "*");
+    };
+    const [open, setOpen] = useState(true);
+    return (
+      <div className="tweaks" style={{ width: open ? 300 : "auto" }}>
+        <header>
+          <h4>Tweaks</h4>
+          <button className="collapse-btn" onClick={() => setOpen(o => !o)} aria-label="toggle">
+            {open ? "—" : "+"}
+          </button>
+        </header>
+        {open && (
+          <>
+            <div className="group">
+              <div className="label">Palette</div>
+              <div className="swatch-row">
+                {PALETTES.map(p => (
+                  <div
+                    key={p.id}
+                    title={p.label}
+                    className={"swatch " + (state.palette === p.id ? "active" : "")}
+                    style={{ background: p.color }}
+                    onClick={() => update("palette", p.id)}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="group">
+              <div className="label">Type pairing</div>
+              <div className="row">
+                {TYPES.map(t => (
+                  <button
+                    key={t.id}
+                    className={"opt " + (state.typePair === t.id ? "active" : "")}
+                    onClick={() => update("typePair", t.id)}
+                  >{t.label}</button>
+                ))}
+              </div>
+            </div>
+            <div className="group">
+              <div className="label">Hero layout</div>
+              <div className="row">
+                {HEROES.map(h => (
+                  <button
+                    key={h.id}
+                    className={"opt " + (state.heroLayout === h.id ? "active" : "")}
+                    onClick={() => update("heroLayout", h.id)}
+                  >{h.label}</button>
+                ))}
+              </div>
+            </div>
+            <div className="group">
+              <div className="toggle">
+                <span>Dark mode</span>
+                <div className={"switch " + (state.dark ? "on" : "")} onClick={() => update("dark", !state.dark)} />
+              </div>
+              <div className="toggle">
+                <span>Works in progress</span>
+                <div className={"switch " + (state.showWip ? "on" : "")} onClick={() => update("showWip", !state.showWip)} />
+              </div>
+              <div className="toggle">
+                <span>Substack</span>
+                <div className={"switch " + (state.showSubstack ? "on" : "")} onClick={() => update("showSubstack", !state.showSubstack)} />
+              </div>
+              <div className="toggle">
+                <span>About / Bio</span>
+                <div className={"switch " + (state.showBio ? "on" : "")} onClick={() => update("showBio", !state.showBio)} />
+              </div>
+              <div className="toggle">
+                <span>Contact</span>
+                <div className={"switch " + (state.showContact ? "on" : "")} onClick={() => update("showContact", !state.showContact)} />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // ======= SIGNUP FORM =======
+  function Signup() {
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState("idle"); // idle | sent
+    const submit = (e) => {
+      e.preventDefault();
+      if (!email.includes("@")) return;
+      setStatus("sent");
+    };
+    return (
+      <div className="signup">
+        <div className="mono">— FIELD RECORDINGS / A NEWSLETTER</div>
+        <div style={{ fontFamily: "var(--f-display)", fontSize: 28, marginTop: 8, lineHeight: 1.1, fontWeight: 400 }}>
+          A weekly letter on <em style={{ color: "var(--accent)" }}>attention</em>, landscape, and the work.
+        </div>
+        <form onSubmit={submit}>
+          <input
+            type="email"
+            placeholder="your@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={status === "sent"}
+          />
+          <button className="btn" type="submit" disabled={status === "sent"}>
+            {status === "sent" ? "Subscribed ✓" : "Subscribe"}
+            <span className="arrow">→</span>
+          </button>
+        </form>
+        <div className="hint">
+          {status === "sent"
+            ? <>Thank you. <em>A letter is on its way.</em></>
+            : <>Free · ~1,000 words · Sundays · <em>No spam, ever.</em></>}
+        </div>
+      </div>
+    );
+  }
+
+  // ======= APP =======
+  function App() {
+    const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+    const [editMode, setEditMode] = useState(false);
+
+    useEffect(() => {
+      const handler = (e) => {
+        const d = e.data || {};
+        if (d.type === "__activate_edit_mode") setEditMode(true);
+        if (d.type === "__deactivate_edit_mode") setEditMode(false);
+      };
+      window.addEventListener("message", handler);
+      window.parent?.postMessage({ type: "__edit_mode_available" }, "*");
+      return () => window.removeEventListener("message", handler);
+    }, []);
+
+    useEffect(() => {
+      const root = document.documentElement;
+      root.dataset.theme = tweaks.dark ? "dark" : "light";
+      root.dataset.palette = tweaks.palette;
+      root.dataset.type = tweaks.typePair;
+      root.dataset.hero = tweaks.heroLayout;
+    }, [tweaks]);
+
+    return (
+      <>
+        <div className="topbar">
+          <div className="mark">M. Ellery Voss</div>
+          <nav>
+            <a href="#book">The Book</a>
+            <a href="#wip">In Progress</a>
+            <a href="#substack">Newsletter</a>
+            <a href="#bio">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+          <div className="meta">EST. MMXXVI</div>
+        </div>
+
+        {/* HERO */}
+        <section className="hero" data-screen-label="01 Hero">
+          <div className="container">
+            <div className="hero-grid">
+              <div>
+                <div className="mono fade-in d1" style={{ marginBottom: 28 }}>
+                  <span style={{ color: "var(--accent)" }}>●</span> Debut novel — out Spring 2026
+                </div>
+                <h1 className="hero-type fade-in d2">
+                  M. Ellery<br />
+                  <em>Voss</em>
+                </h1>
+                <p className="hero-sub fade-in d3">{AUTHOR.tagline}</p>
+              </div>
+              <div className="hero-meta fade-in d4">
+                <div className="row">
+                  <div className="k">Debut</div>
+                  <div className="v">The Inland Sea <span style={{ color: "var(--ink-faint)" }}>— Graywolf, 2026</span></div>
+                </div>
+                <div className="row">
+                  <div className="k">Working on</div>
+                  <div className="v">A second novel, essays</div>
+                </div>
+                <div className="row">
+                  <div className="k">Newsletter</div>
+                  <div className="v"><em>Field Recordings</em> — weekly</div>
+                </div>
+                <div className="row">
+                  <div className="k">Based in</div>
+                  <div className="v">Portland, Oregon</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="hero-caption">
+              <div className="left">
+                <em>"The past is not behind us — it is, and has always been, a kind of weather."</em> &nbsp;— from <span style={{ fontStyle: "italic" }}>The Inland Sea</span>
+              </div>
+              <div className="right">
+                <a className="btn" href="#book">Read the book <span className="arrow">→</span></a>
+                <a className="btn ghost" href="#substack">Newsletter</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* BOOK */}
+        <section id="book" data-screen-label="02 Debut Book">
+          <div className="container">
+            <div className="section-label"><span className="num">01 —</span> The Debut</div>
+            <div className="book-grid">
+              <div className="cover-wrap">
+                <div className="cover">
+                  <div className="cover-top">
+                    <div className="cover-brand">GRAYWOLF · 2026</div>
+                    <div className="ornament" />
+                    <div className="cover-title">
+                      The Inland<em>Sea</em>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="cover-brand" style={{ marginBottom: 6 }}>— A NOVEL —</div>
+                    <div className="cover-author">M. Ellery Voss</div>
+                  </div>
+                </div>
+              </div>
+              <div className="book-text">
+                <div className="mono" style={{ marginBottom: 12 }}>{BOOK.tag}</div>
+                <h2>The Inland <em>Sea</em></h2>
+                <div className="pub-line">
+                  <span className="chip">{BOOK.publisher}</span>
+                  <span className="dot" />
+                  <span className="chip">{BOOK.pubDate}</span>
+                  <span className="dot" />
+                  <span className="chip">304 pp.</span>
+                </div>
+                <div className="synopsis">
+                  <p><span className="drop">I</span>{BOOK.synopsis[0].slice(1)}</p>
+                  <p>{BOOK.synopsis[1]}</p>
+                </div>
+
+                <div className="blurbs">
+                  {BOOK.blurbs.map((b, i) => (
+                    <div className="blurb" key={i}>
+                      <div className="quote">"</div>
+                      <div>
+                        <p>{b.text}</p>
+                        <cite>{b.source}</cite>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="buy-row">
+                  <a className="btn" href="#">Preorder <span className="arrow">→</span></a>
+                  <a className="btn ghost" href="#">Read an excerpt</a>
+                  <a className="btn ghost" href="#">Events</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* WIP */}
+        {tweaks.showWip && (
+          <section id="wip" data-screen-label="03 In Progress">
+            <div className="container">
+              <div className="section-label"><span className="num">02 —</span> In Progress</div>
+              <div className="wip-grid">
+                {WIPS.map((w, i) => (
+                  <div className="wip" key={i} style={{ "--pct": w.pct + "%" }}>
+                    <div className="status">
+                      <span>{w.status}</span>
+                      <span className="bar" />
+                      <span>{w.pct}%</span>
+                    </div>
+                    <h3>{w.title}</h3>
+                    <div className="tag">{w.tag}</div>
+                    <p>{w.blurb}</p>
+                    <div className="foot">
+                      <span>{w.foot[0]}</span>
+                      <span>{w.foot[1]}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* SUBSTACK */}
+        {tweaks.showSubstack && (
+          <section id="substack" data-screen-label="04 Substack">
+            <div className="container">
+              <div className="section-label"><span className="num">03 —</span> The Newsletter</div>
+              <div className="substack">
+                <div className="substack-left">
+                  <h2>Field <em>Recordings</em></h2>
+                  <p className="desc">
+                    A weekly letter on attention, landscape, and the strange work of making things up on purpose. Early drafts, reading lists, and quiet notices from the desk.
+                  </p>
+                  <Signup />
+                  <div className="substack-stats">
+                    <div className="stat">
+                      <div className="num">2,140</div>
+                      <div className="lab">Readers</div>
+                    </div>
+                    <div className="stat">
+                      <div className="num">47</div>
+                      <div className="lab">Letters</div>
+                    </div>
+                    <div className="stat">
+                      <div className="num">Sun.</div>
+                      <div className="lab">Delivery</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="substack-right">
+                  <div className="mono" style={{ marginBottom: 18 }}>— RECENT LETTERS</div>
+                  <div className="posts">
+                    {POSTS.map((p, i) => (
+                      <a className="post" key={i} href="#" onClick={(e) => e.preventDefault()}>
+                        <div className="date">{p.date}</div>
+                        <div>
+                          <div className="title">{p.title}</div>
+                          <div className="excerpt">{p.excerpt}</div>
+                        </div>
+                        <div className="read">{p.read} read →</div>
+                      </a>
+                    ))}
+                  </div>
+                  <div style={{ marginTop: 20 }}>
+                    <a className="btn ghost" href="#">Browse the archive <span className="arrow">→</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* BIO */}
+        {tweaks.showBio && (
+          <section id="bio" data-screen-label="05 About">
+            <div className="container">
+              <div className="section-label"><span className="num">04 —</span> About</div>
+              <div className="bio">
+                <div className="bio-portrait">
+                  <div className="ph" />
+                  <div className="corner tl">— Portrait</div>
+                  <div className="corner tr">3 : 4</div>
+                  <div className="ph-label">author photo — drop in</div>
+                </div>
+                <div className="bio-text">
+                  <h2>A brief <em>note</em>.</h2>
+                  {BIO.map((p, i) => <p key={i}>{p}</p>)}
+                  <div className="bio-facts">
+                    {FACTS.map((f, i) => (
+                      <div className="fact" key={i}>
+                        <div className="k">{f.k}</div>
+                        <div className="v">{f.v}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* CONTACT */}
+        {tweaks.showContact && (
+          <section id="contact" className="contact" data-screen-label="06 Contact">
+            <div className="container">
+              <div className="ornament-rule" style={{ marginBottom: 80 }}>
+                <span className="glyph">§</span>
+              </div>
+              <div className="contact-grid">
+                <div>
+                  <div className="mono" style={{ marginBottom: 20 }}>— Get in touch</div>
+                  <h2>Say <em>hello</em>.</h2>
+                </div>
+                <div className="contact-right">
+                  <div className="contact-row">
+                    <div className="k">Agent</div>
+                    <div className="v"><a href="mailto:rhea@folioliterary.com">Rhea Klausner, Folio</a></div>
+                  </div>
+                  <div className="contact-row">
+                    <div className="k">Press</div>
+                    <div className="v"><a href="mailto:press@mellervoss.com">press@mellervoss.com</a></div>
+                  </div>
+                  <div className="contact-row">
+                    <div className="k">Events</div>
+                    <div className="v"><a href="mailto:events@mellervoss.com">events@mellervoss.com</a></div>
+                  </div>
+                  <div className="contact-row">
+                    <div className="k">Elsewhere</div>
+                    <div className="v" style={{ fontStyle: "normal", fontSize: 14, fontFamily: "var(--f-mono)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                      <a href="#">Substack</a> &nbsp; <a href="#">Instagram</a> &nbsp; <a href="#">Bluesky</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <footer>
+                <div>© MMXXVI · M. Ellery Voss</div>
+                <div className="c">— Designed as a debut —</div>
+                <div className="r">Set in Cormorant · Newsreader</div>
+              </footer>
+            </div>
+          </section>
+        )}
+
+        {editMode && <Tweaks state={tweaks} setState={setTweaks} />}
+      </>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
