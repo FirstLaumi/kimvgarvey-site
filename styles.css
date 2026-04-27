@@ -899,10 +899,13 @@ section { position: relative; padding: clamp(80px, 12vw, 160px) 0; }
   text-transform: uppercase;
   color: var(--bone-mute);
 }
-@media (max-width: 880px) { .bio { grid-template-columns: 1fr; } }
-@media (max-width: 880px) { .bio-head { position: static; top: auto; } }
 .bio-head {
   position: sticky; top: 120px;
+}
+@media (max-width: 880px) {
+  .bio { grid-template-columns: 1fr; }
+  .bio-head { position: static !important; top: auto !important; }
+  .bio-head .bio-portrait { margin-top: 16px; max-height: 60vh; }
 }
 .bio-body {
   font-family: var(--f-serif);
