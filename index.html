@@ -40,13 +40,31 @@
 <!-- ==================== NAV ==================== -->
 <nav class="nav">
   <a href="#top" class="mark">Kim V. Garvey</a>
-  <ul>
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="#book">The Shimmer</a></li>
     <li><a href="#works">Other Works</a></li>
     <li><a href="#substack">Shimmerings</a></li>
     <li><a href="#about">About</a></li>
   </ul>
 </nav>
+<script>
+  (function(){
+    var btn = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('nav-menu');
+    if (!btn || !menu) return;
+    function close(){ menu.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    function toggle(){
+      var isOpen = menu.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    btn.addEventListener('click', toggle);
+    menu.addEventListener('click', function(e){ if (e.target.tagName === 'A') close(); });
+  })();
+</script>
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="top">
@@ -72,7 +90,7 @@
     <div class="book">
 
       <div class="book-cover-wrap">
-        <div class="book-cover" aria-label="Placeholder cover for The Shimmer">
+        <div class="book-cover" aria-label="Cover treatment for The Shimmer">
           <div class="book-cover-text">
             <div class="cv-author">Kim V. Garvey</div>
             <div>
@@ -80,7 +98,6 @@
             </div>
             <div class="cv-sub">— A Novel —</div>
           </div>
-          <div class="cover-placeholder-note">Placeholder</div>
         </div>
       </div>
 
@@ -121,24 +138,24 @@
         <div class="eyebrow">Dramatis Personae</div>
         <h2 class="section-title">From the <em>world</em> of The Shimmer.</h2>
       </div>
-      <a class="characters-more" href="characters.html">Meet them all →</a>
+      <a class="characters-more" href="Characters.html">Meet them all →</a>
     </div>
     <div class="char-row">
-      <a class="char-card" href="characters.html#rorie">
+      <a class="char-card" href="Characters.html#rorie">
         <div class="char-img" style="background-image:url('images/char-rorie.png')"></div>
         <div class="char-meta">
           <div class="char-name">Rorie Bastory</div>
           <div class="char-role">Death Investigator, Driftwood County</div>
         </div>
       </a>
-      <a class="char-card" href="characters.html#hermi">
+      <a class="char-card" href="Characters.html#hermi">
         <div class="char-img" style="background-image:url('images/char-hermi.png?v=4')"></div>
         <div class="char-meta">
           <div class="char-name">Hermi</div>
           <div class="char-role">The War-Dog</div>
         </div>
       </a>
-      <a class="char-card" href="characters.html#laumi">
+      <a class="char-card" href="Characters.html#laumi">
         <div class="char-img" style="background-image:url('images/char-laumi.png?v=2')"></div>
         <div class="char-meta">
           <div class="char-name">Laumi</div>
@@ -229,7 +246,7 @@
     </div>
     <div class="gallery-foot">
       <p class="gallery-credit">All photographs © Kim V. Garvey</p>
-      <a class="gallery-more" href="the-shore.html">View all →</a>
+      <a class="gallery-more" href="The Shore.html">View all →</a>
     </div>
   </div>
 </section>
