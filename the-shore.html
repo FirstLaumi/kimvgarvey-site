@@ -88,13 +88,31 @@
 
 <nav class="nav">
   <a href="index.html" class="mark">Kim V. Garvey</a>
-  <ul>
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="nav-menu">
     <li><a href="index.html#book">The Shimmer</a></li>
     <li><a href="index.html#works">Other Works</a></li>
     <li><a href="index.html#substack">Shimmerings</a></li>
     <li><a href="index.html#about">About</a></li>
   </ul>
 </nav>
+<script>
+  (function(){
+    var btn = document.querySelector('.nav-toggle');
+    var menu = document.getElementById('nav-menu');
+    if (!btn || !menu) return;
+    function close(){ menu.classList.remove('open'); btn.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
+    function toggle(){
+      var isOpen = menu.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+    btn.addEventListener('click', toggle);
+    menu.addEventListener('click', function(e){ if (e.target.tagName === 'A') close(); });
+  })();
+</script>
 
 <header class="subpage-header">
   <a class="subpage-back" href="index.html">← Back</a>
@@ -105,19 +123,29 @@
 <div class="masonry" id="masonry">
   <figure><img src="images/beach-3.png"  alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-7.png"  alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-19.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/beach-2.png"  alt="" loading="lazy" /></figure>
   <figure><img src="images/hermi.png"    alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-22.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-15.png" alt="" loading="lazy" /></figure>
   <figure><img src="images/beach-5.png"  alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-23.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/beach-1.png"  alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-16.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-24.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/beach-4.png"  alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-9.png"  alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-25.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-17.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-26.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-11.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-27.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-12.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-28.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-13.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-29.jpg" alt="" loading="lazy" /></figure>
   <figure><img src="images/shore-14.png" alt="" loading="lazy" /></figure>
+  <figure><img src="images/shore-30.jpg" alt="" loading="lazy" /></figure>
 </div>
 
 <p class="credit-foot">All photographs © Kim V. Garvey</p>
